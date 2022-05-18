@@ -15,8 +15,6 @@ gap_size    =  20
 
 time_out = 10
 
-pepe_test = pygame.image.load("Pepe.jpg")
-
 # Culori alese prin: htmlcolorcodes.com
 # Color              R    G    B
 background_color = (39, 139, 218) # albastru deschis
