@@ -1,6 +1,5 @@
 import pygame
 import random
-
 from pygame.locals import *
 
 # General settings:
@@ -8,16 +7,19 @@ FPS         =  30  # Frames per second
 square_size =  200 # Pentru a schimba aria de joc propriu-zisa, se schimba variabila square_size ( Max. recomandat = 250 )
 game_speed  =  500 # De aici se schimba viteza in care apar patratele in mod aleator
 
-# Calcul automat al ferestrei de joc in functie de marimea patratului
+# Calcul automat al ferestrei de joc in functie de marimea patratului ( Ratio 7:8 )
 gap_size      = square_size // 10  # Distanta dintre patrate
 window_height = square_size * 4    # Inaltimea ferestrei de joc
 window_width  = square_size * 3.5  # Latimea ferestrei de joc
 
 # Culori alese prin: htmlcolorcodes.com
-# Color              R    G    B
-background_color = (39, 139, 218) # albastru deschis
 
-color            = (21,  95, 190) # albastru inchis
+# Color              R    G    B
+background_color = (39, 139, 218) # albastru low
+
+color            = (21,  95, 190) # albastru med
+
+text_color       = (35,  78, 169) # albastru high
 
 square_color     = []
 for i in range(9):
@@ -112,9 +114,11 @@ def main():
 
     # Secventa corecta
     correct = pygame.mixer.Sound("correct.ogg")
+    correct.set_volume(0.3)
 
     # Sfarsitul jocului
     endgame = pygame.mixer.Sound("endgame.ogg")
+    endgame.set_volume(0.6)
 
     # Variabile joc nou:
     model = []
@@ -132,21 +136,20 @@ def main():
         Buttons()
 
         # Display score:
-        score_display = font.render("Score: " + str(score), 1, (100,100,100)) # alta culoare, mai tarziu
+        score_display = font.render("Score: " + str(score), 1, text_color) 
         score_rectangle = ( gap_size, gap_size ) # Stanga sus
         display.blit( score_display, score_rectangle ) # Afiseaza in "drepunghiul" de scor, scorul
 
         # Display attempts:
-        setting_display = font.render("Attempts: " + str(attempts), 1, (100,100,100)) # alta culoare, mai tarziu
+        setting_display = font.render("Attempts: " + str(attempts), 1, text_color) 
         setting_rectangle = ( gap_size, 3 * gap_size) # Stanga sus, sub scor
         display.blit( setting_display, setting_rectangle ) 
 
         # Display high score in current run:
-        setting_display = font.render("High Score: " + str(high_score), 1, (100,100,100)) # alta culoare, mai tarziu
+        setting_display = font.render("High Score: " + str(high_score), 1, text_color) 
         setting_rectangle = ( window_width- square_size - 2 * gap_size, 2 * gap_size ) # Stanga sus, sub scor
         display.blit( setting_display, setting_rectangle ) 
         
-
         CheckClose()
 
         for event in pygame.event.get():
@@ -154,17 +157,16 @@ def main():
             if event.type == MOUSEBUTTONUP:
 
                 mouse_x, mouse_y = event.pos # pos returneaza coordonatele punctului -> (x,y)
-                current_click = ClickButton( mouse_x, mouse_y ) # stocheaza butonul pe care s-a apasat
+                current_click = ClickButton( mouse_x, mouse_y ) # Stocheaza butonul pe care s-a apasat
         
         
         if not input_await:
 
             pygame.display.update()
             pygame.time.wait(1000)
-            model.append(random.choice(S))  #vector care stocheaza patratele generate aleator, in ordinea generarii lor
+            model.append(random.choice(S))  # Lista care stocheaza patratele generate aleator, in ordinea generarii lor
 
-            # Propun sa pastram:
-            Message("Wait", [ 1.5 * square_size, 2 * gap_size ], (100,100,100)) # alta culoare, mai tarziu
+            Message("Wait", [ 1.5 * square_size, 2 * gap_size ], text_color) 
 
             for square in model:
 
@@ -186,9 +188,8 @@ def main():
                     input_await = False
                     step = 0
 
-                    # Optional:
                     pygame.time.wait(500)
-                    Message("Nice", [ 1.5 * square_size, 2 * gap_size ], (100,100,100)) # alta culoare, mai tarziu
+                    Message("Nice", [ 1.5 * square_size, 2 * gap_size ], text_color)
                     correct.play()
                     pygame.display.update()
                     pygame.time.wait(1000)
@@ -205,8 +206,7 @@ def main():
 
                 score = 0
 
-                # Optional:
-                Message("Try again", [ 1.5 * ( square_size - gap_size ), 2 * gap_size ], (100,100,100)) # alta culoare, mai tarziu
+                Message("Try again", [ 1.5 * ( square_size - gap_size ), 2 * gap_size ], text_color)
                 endgame.play()
                 pygame.display.update()
                 pygame.time.wait(1000)
