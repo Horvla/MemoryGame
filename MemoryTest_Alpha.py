@@ -1,21 +1,16 @@
 import pygame
 import random
 import time
-import sys
 
 from pygame.locals import *
 
-pygame.init()
+FPS = 60 # Frames per second
 
-FPS = 60
+square_size = 200               # Pentru a schimba aria de joc propriu-zisa, se schimba variabila square_size
+gap_size    =  square_size / 10 # Distanta dintre patrate
 
-square_size = 200
-gap_size    =  square_size / 10
-
-window_height = square_size * 4 
-window_width =  square_size * 3.5
- 
-time_out = 10
+window_height = square_size * 4    # Inaltimea pentru square_size = 200 este de 800
+window_width =  square_size * 3.5  # Latimea pentru square_size = 200 este 700
 
 # Culori alese prin: htmlcolorcodes.com
 # Color              R    G    B
@@ -105,21 +100,28 @@ def main():
 
     pygame.init()
     FPS_clock = pygame.time.Clock()
-    display = pygame.display.set_mode((window_width, window_height))
+    display = pygame.display.set_mode(( window_width, window_height ))
     pygame.display.set_caption("Memory Test")
 
     # Font:
     font = pygame.font.SysFont(None,50)
 
+    # Sunetul in urma apasarii patratului:
     beep = pygame.mixer.Sound("beep.ogg")
+
+    # Secventa corecta
+    correct = pygame.mixer.Sound("correct.ogg")
+
+    # Sfarsitul jocului
+    endgame = pygame.mixer.Sound("endgame.ogg")
 
     # Variabile joc nou:
     model = []
     step = 0
-    last_click = 0
+    # last_click = 0
     score = 0
+    game_speed = 500 # De aici se schimba viteza in care apar patratele in mod aleator
     input_await = False
-
     game_in_progress = True
 
     while game_in_progress:
@@ -134,31 +136,36 @@ def main():
         display.blit( score_display, score_rectangle ) # Afiseaza in "drepunghiul" de scor, scorul
 
         CheckClose()
+
         for event in pygame.event.get():
+
             if event.type == MOUSEBUTTONUP:
+
                 mouse_x, mouse_y = event.pos # pos returneaza coordonatele punctului -> (x,y)
-                current_click = ClickButton(mouse_x,mouse_y) # stocheaza butonul pe care s-a apasat
+                current_click = ClickButton( mouse_x, mouse_y ) # stocheaza butonul pe care s-a apasat
         
         
         if not input_await:
+
             pygame.display.update()
             pygame.time.wait(1000)
             model.append(random.choice(S))  #vector care stocheaza patratele generate aleator, in ordinea generarii lor
 
             # Propun sa pastram:
-            Message("Wait", [300,20], (69,69,69)) # alta culoare, mai tarziu
+            Message("Wait", [305,gap_size], (69,69,69)) # alta culoare, mai tarziu
 
             for square in model:
                 Flash(square)
-                pygame.time.wait(1000) # de aici se schimba viteza in care apar patratele in mod aleator
+                pygame.time.wait(game_speed) 
             input_await = True
         
         else:
+
             if current_click and current_click == model[step]:
 
                 Flash(current_click)
                 step += 1
-                last_click = time.time()
+                # last_click = time.time()
 
                 if step == len(model):
 
@@ -168,18 +175,21 @@ def main():
 
                     # Optional:
                     pygame.time.wait(500)
-                    Message("Nice", [280,20], (69,69,69)) # alta culoare, mai tarziu
+                    Message("Nice", [305,gap_size], (69,69,69)) # alta culoare, mai tarziu
+                    correct.play()
                     pygame.display.update()
-                    pygame.time.wait(500)
+                    pygame.time.wait(1000)
 
-            elif(current_click and current_click != model[step]) or (step != 0 and time.time() - time_out > last_click):
+            elif(current_click and current_click != model[step]):
+
                 model = []
                 step = 0
                 input_await = False
                 score = 0
 
                 # Optional:
-                Message("Try again", [270,20], (69,69,69)) # alta culoare, mai tarziu
+                Message("Try again", [270,gap_size], (69,69,69)) # alta culoare, mai tarziu
+                endgame.play()
                 pygame.display.update()
                 pygame.time.wait(1000)
                 
