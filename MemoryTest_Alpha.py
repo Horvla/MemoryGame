@@ -5,25 +5,35 @@ import sys
 
 from pygame.locals import *
 
+# pygame.init()
+
 FPS = 60
 
-window_height = 24 * 40
-window_width = 20 * 40   # 40 = lungimea/latimea patratelului de caiet
-
-square_size = 220
+window_height = 800 
+window_width =  700 
+ 
+square_size = 200
 gap_size    =  20
+
+time_out = 10
+
+"""
+pepe      = pygame.display.set_mode((200,200))
+pepe_test = pygame.image.load("Pepe.jpg").convert()
+"""
 
 # Culori alese prin: htmlcolorcodes.com
 # Color              R    G    B
 background_color = (39, 139, 218) # albastru deschis
 
 color            = (21,  95, 190) # albastru inchis
+
 square_color     = []
 for i in range(9):
     square_color.append(color)
 
-x = int((window_width  - (2 * square_size) - gap_size))
-y = int((window_height - (2 * square_size) - gap_size))
+x = int((window_width  - (3 * square_size) - 2 * gap_size))/2
+y = int((window_height - (3 * square_size) - 2 * gap_size))/2 + 2 * gap_size  #am lasat spatiu sus pt nivel, vieti etc  
 
 S = [] #vector care contine cele 9 patrate
 
@@ -42,62 +52,56 @@ S6 = pygame.Rect(x                               , y + 2 * (square_size + gap_si
 S7 = pygame.Rect(x + square_size + gap_size      , y + 2 * (square_size + gap_size), square_size, square_size)
 S8 = pygame.Rect(x + 2 * (square_size + gap_size), y + 2 * (square_size + gap_size), square_size, square_size)
 
-S.append(S0)
-S.append(S1)
-S.append(S2)
-S.append(S3)
-S.append(S4)
-S.append(S5)
-S.append(S6)
-S.append(S7)
-S.append(S8)
+S.extend([S0,S1,S2,S3,S4,S5,S6,S7,S8])
 
 def Buttons():
-    pygame.draw.rect(display, square_color[0], S0)
-    pygame.draw.rect(display, square_color[1], S1)
-    pygame.draw.rect(display, square_color[2], S2)
-    pygame.draw.rect(display, square_color[3], S3)
-    pygame.draw.rect(display, square_color[4], S4)
-    pygame.draw.rect(display, square_color[5], S5)
-    pygame.draw.rect(display, square_color[6], S6)
-    pygame.draw.rect(display, square_color[7], S7)
-    pygame.draw.rect(display, square_color[8], S8)
-
+    for i in range (9):
+        pygame.draw.rect(display, square_color[i], S[i])
+    
 def Close():
     pygame.quit()
-    sys.exit()
+    quit()
+    
+def CheckClose():
+    for event in pygame.event.get(QUIT):
+        Close()
+    for event in pygame.event.get(KEYUP): 
+        if event.key == K_ESCAPE:
+            Close() 
+        pygame.event.post(event)
 
 def ClickButton(x,y):
     # collidepoint returneaza o variabila booleana, daca s-a apasat in interiorul unui patrat
-    if   S0.collidepoint( (x,y) ):
-        return square_color[0]
-    elif S1.collidepoint( (x,y) ):
-        return square_color[1]
-    elif S2.collidepoint( (x,y) ):
-        return square_color[2]
-    elif S3.collidepoint( (x,y) ):
-        return square_color[3]
-    elif S4.collidepoint( (x,y) ):
-        return square_color[4]
-    elif S5.collidepoint( (x,y) ):
-        return square_color[5]
-    elif S6.collidepoint( (x,y) ):
-        return square_color[6]
-    elif S7.collidepoint( (x,y) ):
-        return square_color[7]
-    elif S8.collidepoint( (x,y) ):
-        return square_color[8]    
+    for i in range (9):
+        if S[i].collidepoint( (x,y) ):
+            return S[i]
+    return None
 
-def Flash(a):
-    for i in range(9):
-        if a == square_color[i]:
-            square = S[i]
+def Flash(square,speed = 100):
 
-    original_display = display.copy()
+    for i in range (9):
+        if square == S[i]:
+            color = square_color[i]
+            sound = beep
 
-    flash_color      = (163,182, 206)
-    R, G, B          = flash_color
+    R = 21
+    G = 95
+    B = 250
 
+    flash_color = (R, G, B) # culoarea flash-ului in urma apasarii/repetarii modelului
+    
+    CheckClose()
+    
+    sound.play()
+    display.fill(flash_color,square)
+    pygame.display.update()
+    pygame.time.wait(speed)
+    display.fill(color,square)
+    pygame.display.update()
+
+def Message( message, coordinates, color):
+    msg = font.render( message, True, color )
+    display.blit( msg, coordinates )
 
 def main():
     global FPS_clock, display, font, beep
@@ -105,10 +109,10 @@ def main():
     pygame.init()
     FPS_clock = pygame.time.Clock()
     display = pygame.display.set_mode((window_width, window_height))
-    pygame.display.set_caption("Test")
+    pygame.display.set_caption("Memory Test")
 
-    # De scris font
-    # -----------
+    # Font:
+    font = pygame.font.SysFont(None,50)
 
     beep = pygame.mixer.Sound("beep.ogg")
 
@@ -126,32 +130,65 @@ def main():
         current_click = None
         display.fill(background_color)
         Buttons()
-        pygame.display.update()
 
         # Display score:
-        # -------------
+        score_display = font.render("Level/Score: " + str(score), 1, (69,69,69)) # alta culoare, mai tarziu
+        score_rectangle = ( gap_size, gap_size ) # Stanga sus
+        display.blit( score_display, score_rectangle ) # Afiseaza in "drepunghiul" de scor, scorul
 
+        CheckClose()
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                game_in_progress = False
-            elif event.type == MOUSEBUTTONUP:
+            if event.type == MOUSEBUTTONUP:
                 mouse_x, mouse_y = event.pos # pos returneaza coordonatele punctului -> (x,y)
                 current_click = ClickButton(mouse_x,mouse_y) # stocheaza butonul pe care s-a apasat
-        """
+        
+        
         if not input_await:
             pygame.display.update()
             pygame.time.wait(1000)
-            model.append(random.choice(square_color))
-            for button in model:
-                # !!!
-        else:
-            if not current_click:
-                continue
-            elif current_click == model[step]:
-                return 0
-                # !!!
-        return
-        """
+            model.append(random.choice(S))  #vector care stocheaza patratele generate aleator, in ordinea generarii lor
 
-if __name__ == "__main__":
+            # Propun sa pastram:
+            Message("Wait", [300,20], (69,69,69)) # alta culoare, mai tarziu
+
+            for square in model:
+                Flash(square)
+                pygame.time.wait(1000) # de aici se schimba viteza in care apar patratele in mod aleator
+            input_await = True
+        
+        else:
+            if current_click and current_click == model[step]:
+
+                Flash(current_click)
+                step += 1
+                last_click = time.time()
+
+                if step == len(model):
+
+                    score += 1
+                    input_await = False
+                    step = 0
+
+                    # Optional:
+                    pygame.time.wait(200)
+                    Message("Congrats", [280,20], (69,69,69)) # alta culoare, mai tarziu
+                    pygame.display.update()
+                    pygame.time.wait(200)
+
+            elif(current_click and current_click != model[step]) or (step != 0 and time.time() - time_out > last_click):
+                model = []
+                step = 0
+                input_await = False
+                score = 0
+
+                # Optional:
+                Message("Try again", [270,20], (69,69,69)) # alta culoare, mai tarziu
+                pygame.display.update()
+                pygame.time.wait(1000)
+                
+
+        pygame.display.update()
+        FPS_clock.tick(FPS)
+
+if __name__ == '__main__':
     main()
