@@ -7,8 +7,11 @@ Pentru a modifica viteza jocului, schimbați valoarea variabilei `game_speed`, a
 Pentru a modifica suprafața de joc, schibati valoarea variabilei `square_size`; mai multe detalii puteți vedea chiar în codul jocului.
 
 Site-uri folosite pentru a scrie codul:
+<<<<<<< HEAD
 1. https://www.pygame.org/docs/
 2. https://www.pygame.org/wiki/tutorials
 3. https://www.geeksforgeeks.org/python-programming-language/?ref=shm
 4. https://stackoverflow.com/
 5. https://htmlcolorcodes.com/
+=======
+>>>>>>> 410fe6cba30eed545a6bdbe3bdb85f71bf305980
