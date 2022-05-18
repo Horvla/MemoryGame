@@ -22,8 +22,8 @@ square_color     = []
 for i in range(9):
     square_color.append(color)
 
-x = int((window_width  - (2 * square_size) - gap_size))//2
-y = int((window_height - (2 * square_size) - gap_size))//2 - gap_size
+x = int((window_width  - (2 * square_size) - gap_size))
+y = int((window_height - (2 * square_size) - gap_size))
 
 S = [] #vector care contine cele 9 patrate
 
