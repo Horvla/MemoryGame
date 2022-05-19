@@ -78,7 +78,7 @@ def ClickButton(x,y):
     return None
 
 # Functie care schimba culoarea unui patrat ( ca argument ) si care reda un sunet
-def Flash(square,speed = 100):
+def Flash( square, speed = 100 ):
 
     for i in range (9):
         if square == S[i]:
@@ -89,15 +89,15 @@ def Flash(square,speed = 100):
     G = 145
     B = 239
 
-    flash_color = (R, G, B) # culoarea flash-ului in urma apasarii/repetarii modelului
+    flash_color = ( R, G, B ) # culoarea flash-ului in urma apasarii/repetarii modelului
     
     CheckClose()
     
     sound.play()
-    display.fill(flash_color,square)
+    display.fill( flash_color, square )
     pygame.display.update()
-    pygame.time.wait(speed)
-    display.fill(color,square)
+    pygame.time.wait( speed )
+    display.fill( color, square )
     pygame.display.update()
 
 # Functie care afiseaza mesaj la anumite coordonate si de o anumita culoare
@@ -149,14 +149,14 @@ def main():
         display.blit( score_display, score_rectangle ) # Afiseaza in "drepunghiul" de scor, scorul
 
         # Display attempts:
-        setting_display = font.render("Attempts: " + str(attempts), 1, text_color) 
-        setting_rectangle = ( gap_size, 3 * gap_size) # Stanga sus, sub scor
-        display.blit( setting_display, setting_rectangle ) 
+        attempts_display = font.render("Attempts: " + str(attempts), 1, text_color) 
+        attempts_rectangle = ( gap_size, 3 * gap_size) # Stanga sus, sub scor
+        display.blit( attempts_display, attempts_rectangle ) 
 
         # Display high score in current run:
-        setting_display = font.render("High Score: " + str(high_score), 1, text_color) 
-        setting_rectangle = ( window_width- square_size - 2 * gap_size, 2 * gap_size ) # Stanga sus, sub scor
-        display.blit( setting_display, setting_rectangle ) 
+        high_score_display = font.render("High Score: " + str(high_score), 1, text_color) 
+        high_score_rectangle = ( window_width - square_size - 2 * gap_size, 2 * gap_size ) # Dreapta sus
+        display.blit( high_score_display, high_score_rectangle ) 
         
         CheckClose()
 
