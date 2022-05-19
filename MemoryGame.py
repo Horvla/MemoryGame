@@ -14,14 +14,15 @@ window_width  = square_size * 3.5  # Latimea ferestrei de joc
 
 # Culori alese prin: htmlcolorcodes.com
 
-# Color              R    G    B
-background_color = (39, 139, 218) # albastru low
+# Color                R    G    B
+background_color = (  29,  40,  89) # albastru high
 
-color            = (21,  95, 190) # albastru med
+color            = (  21,  95, 190) # albastru med
 
-text_color       = (18,  39,  83) # albastru high
+text_color       = ( 249, 242,  58) # galben
 
-square_color     = []
+# Lista care contine culorile corespunzatoare fiecarui patrat
+square_color     = [] 
 for i in range(9):
     square_color.append(color)
 
@@ -31,7 +32,7 @@ y = int((window_height - (3 * square_size) - 2 * gap_size))/2 + 2 * gap_size
 
 S = [] # Lista care contine cele 9 patrate descrise mai jos
 
-# Prima linie de patrate - se pastreaza y
+# Prima linie de patrate
 S0 = pygame.Rect(x                               , y, square_size, square_size)
 S1 = pygame.Rect(x + square_size + gap_size      , y, square_size, square_size)
 S2 = pygame.Rect(x + 2 * (square_size + gap_size), y, square_size, square_size)
