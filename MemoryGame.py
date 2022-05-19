@@ -49,14 +49,17 @@ S8 = pygame.Rect(x + 2 * (square_size + gap_size), y + 2 * (square_size + gap_si
 # Adaugare celor 9 patrate de tip rect in lista S
 S.extend([S0,S1,S2,S3,S4,S5,S6,S7,S8])
 
+# Functie care deseneaza butoanele <=> patratele
 def Buttons():
     for i in range (9):
         pygame.draw.rect(display, square_color[i], S[i])
-    
+
+# Functie care inchide programul in momentul apelarii    
 def Close():
     pygame.quit()
     quit()
-    
+
+# Functie care verifica apasarea lui X/ESC pentru a iesi din program in while-ul principal   
 def CheckClose():
     for event in pygame.event.get(QUIT):
         Close()
@@ -65,6 +68,7 @@ def CheckClose():
             Close() 
         pygame.event.post(event)
 
+# Functie care primeste ca argument coordonate si returneaza patratul pe care a fost apasat
 def ClickButton(x,y):
     # Collidepoint returneaza o variabila booleana, daca s-a apasat in interiorul unui patrat
     for i in range (9):
@@ -72,6 +76,7 @@ def ClickButton(x,y):
             return S[i]
     return None
 
+# Functie care schimba culoarea unui patrat ( ca argument ) si care reda un sunet
 def Flash(square,speed = 100):
 
     for i in range (9):
@@ -94,10 +99,12 @@ def Flash(square,speed = 100):
     display.fill(color,square)
     pygame.display.update()
 
+# Functie care afiseaza mesaj la anumite coordonate si de o anumita culoare
 def Message( message, coordinates, color):
     msg = font.render( message, True, color )
     display.blit( msg, coordinates )
 
+# Functia principala a jocului
 def main():
     global FPS_clock, display, font, beep
 
@@ -192,7 +199,7 @@ def main():
                     Message("Nice", [ 1.5 * square_size, 2 * gap_size ], text_color)
                     correct.play()
                     pygame.display.update()
-                    pygame.time.wait(1000)
+                    pygame.time.wait(1000) # Delay pentru urmatoarea secventa
 
             elif(current_click and current_click != model[step]):
 
@@ -209,7 +216,7 @@ def main():
                 Message("Try again", [ 1.5 * ( square_size - gap_size ), 2 * gap_size ], text_color)
                 endgame.play()
                 pygame.display.update()
-                pygame.time.wait(1000)
+                pygame.time.wait(1000) # Delay pentru urmatoarea secventa, in cazul esuarii
                 
 
         pygame.display.update()
