@@ -19,7 +19,7 @@ background_color = (39, 139, 218) # albastru low
 
 color            = (21,  95, 190) # albastru med
 
-text_color       = (35,  78, 169) # albastru high
+text_color       = (18,  39,  83) # albastru high
 
 square_color     = []
 for i in range(9):
@@ -84,9 +84,9 @@ def Flash(square,speed = 100):
             color = square_color[i]
             sound = beep
 
-    R = 21
-    G = 95
-    B = 250
+    R = 101
+    G = 145
+    B = 239
 
     flash_color = (R, G, B) # culoarea flash-ului in urma apasarii/repetarii modelului
     
