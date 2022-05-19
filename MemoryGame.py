@@ -196,8 +196,10 @@ def main():
                     input_await = False
                     step = 0
 
+                    encouragement = ["   Nice!", "   Good!", "  Super!", " Hurray!", "    Wow!", "   Cool!", "  Great!", "Not bad!", "Perfect!", "   Fine!", "   Okay!"]
+
                     pygame.time.wait(500)
-                    Message("Nice", [ 1.5 * square_size, 2 * gap_size ], text_color)
+                    Message(random.choice(encouragement), [ 1.4 * square_size, 2 * gap_size ], text_color)
                     correct.play()
                     pygame.display.update()
                     pygame.time.wait(1000) # Delay pentru urmatoarea secventa
