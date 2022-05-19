@@ -112,7 +112,7 @@ def main():
     pygame.init()
     FPS_clock = pygame.time.Clock()
     display = pygame.display.set_mode(( window_width, window_height ))
-    pygame.display.set_caption("Memory Test")
+    pygame.display.set_caption("Memory Game")
 
     # Font:
     font = pygame.font.SysFont(None,square_size//4)
