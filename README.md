@@ -4,7 +4,7 @@
 
 Pentru a modifica viteza jocului, schimbați valoarea variabilei `game_speed`, având în vedere faptul că o secundă este scrisă ca `1000`.
 
-Pentru a modifica suprafața de joc, schibati valoarea variabilei `square_size`; mai multe detalii puteți vedea chiar în codul jocului.
+Pentru a modifica suprafața de joc, schimbați valoarea variabilei `square_size`; mai multe detalii puteți vedea chiar în codul jocului.
 
 Site-uri folosite pentru a scrie codul:
 
